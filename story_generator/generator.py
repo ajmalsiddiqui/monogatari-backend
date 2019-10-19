@@ -1,3 +1,4 @@
+import gpt_2_simple as gpt2
 def generate_story(prompt):
   '''
   ! STUB
@@ -7,11 +8,17 @@ def generate_story(prompt):
 
   Returns an array of paragraphs.
   '''
-
-  return [
-    'There once lived an old man by the river.',
-    'He was very poor, and lacked the means to survive.',
-    'Once, while passing by the river, he saw something glint.',
-    'He moved closer to inspect the shining object.',
-    'To his immense surprise, it was gold!'
-  ]
+  sess = gpt2.start_tf_sess()
+  gpt2.load_gpt2(sess, model_name='124M')
+  t = gpt2.generate(sess,
+                model_name='124M',
+                prefix=prompt,
+                length=100,
+                temperature=0.7,
+                top_p=0.9,
+                nsamples=5,
+                batch_size=5
+                )
+  s = t[0]
+  l = s.split('.')
+  return l
