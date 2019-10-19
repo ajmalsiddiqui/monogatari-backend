@@ -1,3 +1,9 @@
+# Local environment
+.env
+
+# GPT-2 Model
+models
+
 # Python virtual environment
 .venv
 

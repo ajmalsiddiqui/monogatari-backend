@@ -4,6 +4,7 @@ from app import app
 
 from story_generator.generator import generate_story as gen_story
 from image_fetch.fetch import fetch_images
+from keyword_extractor.extractor import extract_keywords
 
 @app.route('/')
 def index():
@@ -34,19 +35,50 @@ def generate_story():
     else:
       images = int(request.args.get('images')) if request.args.get('images') else 5
 
-      story = gen_story(prompt)
+      story_paras = gen_story(prompt)
 
-      # ! TODO add logic to select keywords
-      query = story[0]
-      urls = fetch_images(query)
+      # Find keywords from the story in order to query for the images
+      story = ''.join(story_paras)
+      print('story: {}'.format(story))
+      query = extract_keywords(story)
+      queries = query.split('\n')
+      if len(query) == 0:
+        #! TODO handle this
+        print('empty query, setting query to input prompt')
+        queries = prompt
+
+      print('query: {}'.format(query))
+
+      urls = []
+
+      for query_keyword in queries:
+        new_urls = fetch_images(query_keyword)
+        # No images were found
+        if new_urls[0] == None:
+          continue
+
+        urls += [new_urls[0]]
+      
+      if len(urls) < 5:
+        urls += [None] * (5-len(urls))
+
+      parts = [i for i in range(len(story_paras))]
+
+      story_parts_with_urls = [ 
+        {'text': story_para,
+        'url': para_url } 
+        for story_para, para_url in zip(story_paras, urls)]
+
+      # print('yo')
+
+      story_full = dict(zip(parts, story_parts_with_urls))
 
       response = {
         'status': 200,
-        'story': story,
-        # These URLs will come from the search API
-        'urls': urls
+        'story': story_full
       }
   except Exception as e:
+    print(e)
     status = 500
     response = {
       'status': 500,
