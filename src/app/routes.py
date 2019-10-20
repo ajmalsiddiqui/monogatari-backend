@@ -1,4 +1,4 @@
-from flask import Flask, request, json
+from flask import Flask, request, json, send_from_directory, send_file
 
 from app import app
 
@@ -6,9 +6,14 @@ from story_generator.generator import generate_story as gen_story
 from image_fetch.fetch import fetch_images
 from keyword_extractor.extractor import extract_keywords
 
+# Serve the home page
 @app.route('/')
 def index():
-  return 'Hello from the Monogatari API'
+  return app.send_static_file('index.html')
+
+@app.route('/story')
+def serve_story():
+  return app.send_static_file('story/index.html')
 
 @app.route('/generate-story')
 def generate_story():

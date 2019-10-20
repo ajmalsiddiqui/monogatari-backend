@@ -1,4 +1,10 @@
+import os
+from pathlib import Path
+
 import gpt_2_simple as gpt2
+
+models_relative_path = '{}/../../../models'.format(__file__)
+models_path = Path(models_relative_path).resolve()
 
 def generate_story(prompt):
   '''
@@ -14,6 +20,7 @@ def generate_story(prompt):
 
   t = gpt2.generate(sess,
     model_name='124M',
+    model_dir=models_path,
     prefix=prompt,
     length=300,
     temperature=0.7,
