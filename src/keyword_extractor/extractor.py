@@ -1,6 +1,6 @@
 # The implementation of TextRank from the gensim library
 # from gensim.summarization.summarizer import summarize
-from gensim.summarization import keywords
+from gensim.summarization.keywords import keywords
 
 def extract_keywords(text):
   '''
@@ -10,4 +10,4 @@ def extract_keywords(text):
   text: A body of text with multiple sentences
   '''
 
-  return keywords(text)
+  return keywords(text, words=5)

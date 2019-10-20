@@ -52,7 +52,7 @@ def generate_story():
         print('empty query, setting query to input prompt')
         queries = prompt
 
-      print('query: {}'.format(query))
+      print('query: {}'.format(queries))
 
       urls = []
 
@@ -61,8 +61,14 @@ def generate_story():
         # No images were found
         if new_urls[0] == None:
           continue
-
-        urls += [new_urls[0]]
+        
+        # Add the first new URL to the list
+        counter = 0
+        current_url = new_urls[counter]
+        while current_url in urls:
+          counter += 1
+          current_url = new_urls[counter]
+        urls += [new_urls[counter]]
       
       if len(urls) < 5:
         urls += [None] * (5-len(urls))
@@ -73,8 +79,6 @@ def generate_story():
         {'text': story_para,
         'url': para_url } 
         for story_para, para_url in zip(story_paras, urls)]
-
-      # print('yo')
 
       story_full = dict(zip(parts, story_parts_with_urls))
 

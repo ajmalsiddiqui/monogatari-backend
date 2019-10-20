@@ -6,6 +6,8 @@ from environs import Env
 class Config:
   PIXABAY_API_URL = 'https://pixabay.com/api/'
   PIXABAY_API_KEY = os.environ.get('PIXABAY_API_KEY')
+  AZURE_IMAGE_API_URL = 'https://api.cognitive.microsoft.com/bing/v7.0/images/search'
+  AZURE_SECRET_KEY = os.environ.get('AZURE_SECRET_KEY')
 
   def __init__(self):
     try:
@@ -14,6 +16,8 @@ class Config:
       env.read_env()
       if not PIXABAY_API_KEY:
         raise Exception('Missing required app configuration parameter: PIXABAY_API_KEY')
+      if not AZURE_SECRET_KEY:
+        raise Exception('Missing required app configuration parameter: AZURE_SECRET_KEY')
     except Exception as e:
       print(e)
       sys.exit(1)
