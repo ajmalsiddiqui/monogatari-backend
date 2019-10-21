@@ -32,7 +32,7 @@ def bing_image_search(query):
     response = requests.get(
       azure_url,
       params={
-        'q': query + 'illustration',
+        'q': query + 'illustrations',
         'count': 1
       },
       headers={

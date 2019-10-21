@@ -52,6 +52,9 @@ def generate_story():
         print('empty query, setting query to input prompt')
         queries = prompt
 
+      # if len(queries) > 5:
+      #   queries = queries[:5]
+
       print('query: {}'.format(queries))
 
       urls = []

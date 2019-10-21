@@ -31,7 +31,8 @@ def generate_story(prompt, model='run1'):
     top_p=0.9,
     nsamples=1,
     batch_size=1,
-    return_as_list=True)
+    return_as_list=True,
+    truncate='<|endoftext|>')
   # print(t)
   # print(str(t).split('===================='))
   # print('---')
